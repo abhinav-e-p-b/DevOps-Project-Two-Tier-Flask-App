@@ -1,12 +1,9 @@
 services:
   mysql:
-    container_name: mysql-db  # Changed from default 'mysql'
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: devops
-    ports:
-      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -20,12 +17,11 @@ services:
       start_period: 60s
 
   flask-app:
-    container_name: flask-app-container  # Added explicit name
     build: .
     ports:
       - "5000:5000"
     environment:
-      MYSQL_HOST: mysql  # Keep this as 'mysql' - it's the service name
+      MYSQL_HOST: mysql
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_DB: devops
@@ -35,3 +31,10 @@ services:
       mysql:
         condition: service_healthy
     restart: always
+
+volumes:
+  mysql_data:
+
+networks:
+  two-tier-nt:
+    driver: bridge
