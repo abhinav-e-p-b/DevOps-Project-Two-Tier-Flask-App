@@ -14,7 +14,7 @@ pipeline{
         stage('Deploy with docker compose'){
             steps{
                 // existing container if they are running
-                sh 'docker compose down || true'
+                sh 'docker compose down -v'
                 // start app, rebuilding flask image
                 sh 'docker compose up -d --build'
             }
