@@ -23,7 +23,6 @@
             position: relative;
         }
 
-        /* Animated gradient background */
         body::before {
             content: '';
             position: fixed;
@@ -43,7 +42,6 @@
             50% { opacity: 0.8; transform: scale(1.1); }
         }
 
-        /* Floating particles */
         .particles {
             position: fixed;
             top: 0;
@@ -112,7 +110,6 @@
             }
         }
 
-        /* Profile section */
         .profile-section {
             flex: 0 0 240px;
             margin-right: 50px;
@@ -160,6 +157,8 @@
             border: 4px solid rgba(17, 17, 27, 0.9);
             display: block;
             transition: transform 0.4s ease;
+            object-fit: cover;
+            aspect-ratio: 1;
         }
 
         .profile-photo-wrapper:hover img {
@@ -198,10 +197,10 @@
             50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
         }
 
-        /* Content section */
         .content {
             flex: 1;
             animation: slideInRight 1s ease-out;
+            min-width: 0;
         }
 
         @keyframes slideInRight {
@@ -225,6 +224,7 @@
             background-clip: text;
             margin-bottom: 12px;
             line-height: 1.2;
+            word-wrap: break-word;
         }
 
         .header p {
@@ -280,6 +280,37 @@
             line-height: 1.7;
         }
 
+        .messages-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .messages-header h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            color: #8b5cf6;
+            font-weight: 600;
+        }
+
+        .clear-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .clear-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
+        }
+
         .messages {
             margin-bottom: 20px;
             padding: 20px;
@@ -306,7 +337,7 @@
             border-radius: 10px;
         }
 
-        .messages p {
+        .message-item {
             padding: 12px 16px;
             background: rgba(139, 92, 246, 0.1);
             border-left: 3px solid #8b5cf6;
@@ -316,17 +347,37 @@
             color: #e5e5ef;
             animation: messageSlide 0.3s ease-out;
             transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
-        .messages p:hover {
+        .message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #6b6b7b;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .message-item:hover {
             background: rgba(139, 92, 246, 0.15);
             transform: translateX(5px);
         }
 
-        .messages p.placeholder {
+        .messages .placeholder {
             opacity: 0.6;
             border-left: none;
             background: transparent;
+            text-align: center;
+            padding: 30px 16px;
         }
 
         @keyframes messageSlide {
@@ -344,6 +395,26 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .char-count {
+            position: absolute;
+            right: 12px;
+            bottom: -22px;
+            font-size: 0.75rem;
+            color: #6b6b7b;
+        }
+
+        .char-count.warning {
+            color: #f59e0b;
+        }
+
+        .char-count.error {
+            color: #ef4444;
         }
 
         input[type="text"] {
@@ -370,6 +441,10 @@
             background: rgba(17, 17, 27, 0.8);
         }
 
+        input[type="text"].error {
+            border-color: #ef4444;
+        }
+
         input[type="submit"] {
             width: 100%;
             padding: 16px;
@@ -383,6 +458,7 @@
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            margin-top: 8px;
         }
 
         input[type="submit"]::before {
@@ -403,16 +479,32 @@
             height: 300px;
         }
 
-        input[type="submit"]:hover {
+        input[type="submit"]:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
         }
 
-        input[type="submit"]:active {
+        input[type="submit"]:active:not(:disabled) {
             transform: translateY(-1px);
         }
 
-        /* Responsive */
+        input[type="submit"]:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: -8px;
+            padding-left: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
         @media (max-width: 900px) {
             .container {
                 flex-direction: column;
@@ -430,6 +522,10 @@
             .header h1 {
                 font-size: 2rem;
             }
+
+            .header p {
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 600px) {
@@ -439,14 +535,62 @@
 
             .container {
                 padding: 30px 20px;
+                border-radius: 20px;
             }
 
             .header h1 {
                 font-size: 1.75rem;
             }
 
+            .header p {
+                font-size: 0.95rem;
+            }
+
             .about {
                 padding: 20px;
+            }
+
+            .about h2 {
+                font-size: 1.2rem;
+            }
+
+            .about p {
+                font-size: 0.95rem;
+            }
+
+            .messages {
+                max-height: 200px;
+                padding: 15px;
+            }
+
+            .message-item {
+                font-size: 0.9rem;
+                padding: 10px 14px;
+            }
+
+            .profile-section {
+                flex: 0 0 180px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .messages-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .clear-btn {
+                font-size: 0.8rem;
+                padding: 5px 12px;
             }
         }
     </style>
@@ -463,10 +607,9 @@
 
     <div class="main-wrapper">
         <div class="container">
-            <!-- Profile section -->
             <div class="profile-section">
                 <div class="profile-photo-wrapper">
-                    <img src="https://via.placeholder.com/240" alt="Abhinave Photo">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 240'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%238b5cf6;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%234895ef;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='240' height='240' fill='url(%23grad)'/%3E%3Ctext x='120' y='140' font-family='Space Grotesk, sans-serif' font-size='80' fill='white' text-anchor='middle' font-weight='700'%3EAP%3C/text%3E%3C/svg%3E" alt="Abhinave Photo">
                 </div>
                 <div class="status-badge">
                     <span class="status-dot"></span>
@@ -474,7 +617,6 @@
                 </div>
             </div>
 
-            <!-- Content -->
             <div class="content">
                 <div class="header">
                     <h1>Abhinave P B</h1>
@@ -489,13 +631,22 @@
                     </p>
                 </div>
 
+                <div class="messages-header">
+                    <h3>Messages</h3>
+                    <button class="clear-btn" id="clearBtn" style="display: none;">Clear All</button>
+                </div>
+
                 <div class="messages" id="messagesList">
                     <p class="placeholder">No messages yet. Start the conversation by sending a message.</p>
                 </div>
 
                 <form id="messageForm">
-                    <input type="text" name="new_message" id="messageInput" placeholder="Type your message..." required>
-                    <input type="submit" value="Send Message">
+                    <div class="input-wrapper">
+                        <input type="text" name="new_message" id="messageInput" placeholder="Type your message..." required maxlength="500">
+                        <span class="char-count" id="charCount">0/500</span>
+                    </div>
+                    <span class="error-message" id="errorMessage"></span>
+                    <input type="submit" value="Send Message" id="submitBtn">
                 </form>
             </div>
         </div>
@@ -503,38 +654,155 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Store messages in memory
         let messages = [];
 
+        // Load messages from storage on page load
+        async function loadMessages() {
+            try {
+                const result = await window.storage.list('msg:');
+                if (result && result.keys && result.keys.length > 0) {
+                    messages = [];
+                    for (const key of result.keys) {
+                        try {
+                            const data = await window.storage.get(key);
+                            if (data && data.value) {
+                                const msg = JSON.parse(data.value);
+                                messages.push(msg);
+                            }
+                        } catch (e) {
+                            console.log('Message not found:', key);
+                        }
+                    }
+                    messages.sort((a, b) => a.timestamp - b.timestamp);
+                    displayMessages();
+                }
+            } catch (error) {
+                console.log('No messages found in storage');
+            }
+        }
+
+        function displayMessages() {
+            const $messagesList = $("#messagesList");
+            $messagesList.empty();
+            
+            if (messages.length === 0) {
+                $messagesList.html('<p class="placeholder">No messages yet. Start the conversation by sending a message.</p>');
+                $("#clearBtn").hide();
+            } else {
+                messages.forEach((msg, index) => {
+                    const time = new Date(msg.timestamp).toLocaleTimeString('en-US', { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                    $messagesList.append(
+                        `<div class="message-item">
+                            <div class="message-content">${escapeHtml(msg.text)}</div>
+                            <div class="message-time">${time}</div>
+                        </div>`
+                    );
+                });
+                $("#clearBtn").show();
+            }
+            
+            $messagesList.scrollTop($messagesList[0].scrollHeight);
+        }
+
+        async function saveMessage(message) {
+            const msgObj = {
+                text: message,
+                timestamp: Date.now()
+            };
+            messages.push(msgObj);
+            
+            try {
+                await window.storage.set(`msg:${msgObj.timestamp}`, JSON.stringify(msgObj));
+            } catch (error) {
+                console.error('Failed to save message:', error);
+            }
+            
+            displayMessages();
+        }
+
+        async function clearAllMessages() {
+            if (!confirm('Are you sure you want to clear all messages?')) {
+                return;
+            }
+            
+            try {
+                const result = await window.storage.list('msg:');
+                if (result && result.keys) {
+                    for (const key of result.keys) {
+                        try {
+                            await window.storage.delete(key);
+                        } catch (e) {
+                            console.log('Could not delete:', key);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log('Error clearing messages');
+            }
+            
+            messages = [];
+            displayMessages();
+        }
+
         $(document).ready(function() {
-            $("#messageForm").on("submit", function(event) {
+            loadMessages();
+
+            // Character counter
+            $("#messageInput").on('input', function() {
+                const length = $(this).val().length;
+                const $counter = $("#charCount");
+                $counter.text(`${length}/500`);
+                
+                if (length > 450) {
+                    $counter.addClass('error');
+                    $counter.removeClass('warning');
+                } else if (length > 400) {
+                    $counter.addClass('warning');
+                    $counter.removeClass('error');
+                } else {
+                    $counter.removeClass('warning error');
+                }
+            });
+
+            $("#messageForm").on("submit", async function(event) {
                 event.preventDefault();
-                let messageInput = $("#messageInput");
-                let message = messageInput.val().trim();
+                
+                const $input = $("#messageInput");
+                const $errorMsg = $("#errorMessage");
+                const $submitBtn = $("#submitBtn");
+                const message = $input.val().trim();
+
+                $errorMsg.removeClass('show');
+                $input.removeClass('error');
 
                 if (message === "") {
-                    alert("Message cannot be empty!");
+                    $errorMsg.text("Message cannot be empty!").addClass('show');
+                    $input.addClass('error');
                     return;
                 }
 
-                // Add message to array
-                messages.push(message);
+                if (message.length > 500) {
+                    $errorMsg.text("Message is too long! Maximum 500 characters.").addClass('show');
+                    $input.addClass('error');
+                    return;
+                }
 
-                // Remove placeholder if it exists
-                $(".messages .placeholder").remove();
-
-                // Add new message to the display
-                $(".messages").append("<p>" + escapeHtml(message) + "</p>");
+                $submitBtn.prop('disabled', true);
                 
-                // Clear input
-                messageInput.val("");
-
-                // Scroll to bottom
-                $(".messages").scrollTop($(".messages")[0].scrollHeight);
+                await saveMessage(message);
+                
+                $input.val("");
+                $("#charCount").text("0/500").removeClass('warning error');
+                $submitBtn.prop('disabled', false);
+                $input.focus();
             });
+
+            $("#clearBtn").on("click", clearAllMessages);
         });
 
-        // Escape HTML to prevent XSS
         function escapeHtml(text) {
             const map = {
                 '&': '&amp;',
